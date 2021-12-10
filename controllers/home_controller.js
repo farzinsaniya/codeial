@@ -1,5 +1,5 @@
 //this file contains all the actions/controls
-
+//EVERY CONTROLLER NEEDS A ROUTER TO BE ACCESSED
 //below is the syntax for creating a CONTROLLER
 //module.exports.functionName = function(req, res){
     //commands or statements
@@ -9,4 +9,4 @@
 module.exports.home = function(req, res){
     return res.end('<h1>Express is up for Codeial</h1>');
 }
-//after creating the controller, access it in the main JS file
+//after creating the controller, access it in the router file
