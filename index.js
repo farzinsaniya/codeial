@@ -5,6 +5,9 @@ const express = require('express');
 const app = express();
 const port = 8000;
 const expressLayouts = require('express-ejs-layouts');
+//including/importing DB
+const db = require('./config/mongoose');
+
 
 //including the installed library
 app.use(expressLayouts);
