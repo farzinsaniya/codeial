@@ -1,0 +1,30 @@
+<html>
+
+<head>
+    <title>
+        <%=title %>
+    </title>
+    <link rel="stylesheet" href="/css/layout.css">
+    <%- style %>
+</head>
+
+<body>
+<!-- header is included from the _header file using the keyword 'include' -->
+
+    <%- include('_header'); -%>
+
+<!-- body here is the variable part -->
+
+        <%- body %>
+
+<!-- footer is included from the _header file using the keyword 'include -->
+
+        <%- include('_footer'); -%>
+
+        <%- script %>
+
+</body>
+
+
+
+</html>
