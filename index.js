@@ -2,9 +2,17 @@
 //require express using file - step2
 
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const app = express();
 const port = 8000;
 const expressLayouts = require('express-ejs-layouts');
+
+//The express. urlencoded() function is a built-in middleware function in Express. It parses incoming requests with urlencoded payloads and is based on body-parser.
+app.use(express.urlencoded());
+
+//setting up the cookie parser
+app.use(cookieParser());
+
 //including/importing DB
 const db = require('./config/mongoose');
 

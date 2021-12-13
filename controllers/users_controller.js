@@ -1,34 +1,52 @@
-//here profile is the NAME of the FUNCTION
-module.exports.profile = function(req, res){
-    //return res.end('<h1>Express is up for Codeial</h1>');
+const User = require('../models/user');
 
+
+module.exports.profile = function(req, res){
     return res.render('user_profile', {
-        title : "User Profie"
-    });
+        title: 'User Profile'
+    })
 }
 
-//adding actions
 
-//render the signup page
+// render the sign up page
 module.exports.signUp = function(req, res){
     return res.render('user_sign_up', {
-        title: "Codeial | Sign Up Page"
-    });
+        title: "Codeial | Sign Up"
+    })
 }
 
-//render the signin page
+
+// render the sign in page
 module.exports.signIn = function(req, res){
     return res.render('user_sign_in', {
-        title: "Codeial | Sign In Page"
+        title: "Codeial | Sign In"
+    })
+}
+
+// get the sign up data
+module.exports.create = function(req, res){
+    if (req.body.password != req.body.confirm_password){
+        return res.redirect('back');
+    }
+
+    User.findOne({email: req.body.email}, function(err, user){
+        if(err){console.log('error in finding user in signing up'); return}
+
+        if (!user){
+            User.create(req.body, function(err, user){
+                if(err){console.log('error in creating user while signing up'); return}
+
+                return res.redirect('/users/sign-in');
+            })
+        }else{
+            return res.redirect('back');
+        }
+
     });
 }
 
-//get the user's data
-module.exports.create = function(req, res){
-    //todo later
-}
 
-//sign in & create a session for the user
+// sign in and create a session for the user
 module.exports.createSession = function(req, res){
-    //to do later
+    // TODO later
 }
