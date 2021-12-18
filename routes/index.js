@@ -19,4 +19,7 @@ router.get('/', homeController.home);
 // complete URL: localhost:8000/users/profile
 router.use('/users',require('./users'));
 
+//accessing posts
+router.use('/posts', require('./posts'));
+
 module.exports = router;
