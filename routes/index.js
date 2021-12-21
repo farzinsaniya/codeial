@@ -22,4 +22,7 @@ router.use('/users',require('./users'));
 //accessing posts
 router.use('/posts', require('./posts'));
 
+//accessing comments
+router.use('/comments', require('./comments'));
+
 module.exports = router;
