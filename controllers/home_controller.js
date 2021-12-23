@@ -8,34 +8,34 @@ const Post = require('../models/posts');
 const User = require('../models/user');
 
 //here home is the NAME of the FUNCTION
-module.exports.home = function(req, res){
+module.exports.home = async function(req, res){
     //return res.end('<h1>Express is up for Codeial</h1>');
 
     // return res.render('home', {
     //     title : "Home"
     // });
-
-    //poppulate the user
-    Post.find({})
+    //using try-catch block rather than console.log everytym
+                try {
+                    //poppulate the user
+    let posts = await Post.find({})
     .populate('user')
     .populate({
         path: 'comments',
         populate: {
             path: 'user'
         }
-    })
-    .exec(function(err, posts){
-
-        User.find({}, function(err, users){
+    });
+        let users = await User.find({})
             return res.render('home', {
                 title: "Codeial | Home",
                 posts:  posts,
                 all_users: users
             });
-        });
-
-       
-    })
+                } catch (error) {
+                console.log('error', err);
+                return;
+            }
+    
 
 }
 //after creating the controller, access it in the router file
