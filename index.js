@@ -1,16 +1,21 @@
 //install express - step1
 //require express using file - step2
 
+//starting the app
 const express = require('express');
-const cookieParser = require('cookie-parser');
 const app = express();
 const port = 8000;
+
+//requiring the libraries
+const cookieParser = require('cookie-parser');
 const expressLayouts = require('express-ejs-layouts');
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const MongoStore = require('connect-mongo')(session);
 const sassMiddleware = require('node-sass-middleware');
+const flash = require('connect-flash');
+const customMware = require('./config/middleware');
 
 //loading the sass
 app.use(sassMiddleware({
@@ -73,6 +78,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(passport.setAuthenticatedUser);
+
+//initialize flash
+app.use(flash());
+app.use(customMware.setFlash);
 
 //using express routers, setting up the path for it
 app.use('/', require('./routes'));
