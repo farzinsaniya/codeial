@@ -25,4 +25,7 @@ router.use('/posts', require('./posts'));
 //accessing comments
 router.use('/comments', require('./comments'));
 
+//accessing api
+router.use('/api', require('./api'));
+
 module.exports = router;
