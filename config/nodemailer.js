@@ -8,9 +8,10 @@ let transporter = nodemailer.createTransport({
     port: 587,
     secure: false,
     auth: {
-        user: 'saniyafarzin75',
-        pass: 'saniyafarzin@0710'
-    }
+        user: 'developerfarzin@gmail.com',
+        pass: 'utqcjjqxpazppqft'
+    },
+    tls : {rejectUnauthorized : false}
 });
 
 let renderTemplate = (data, relativePath) => {
