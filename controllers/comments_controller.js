@@ -2,6 +2,7 @@ const Comment = require('../models/comment');
 const Post = require('../models/posts');
 const commentsMailer = require('../mailers/comments_mailer');
 
+
 module.exports.create = async function(req, res){
 
     try{
@@ -20,6 +21,13 @@ module.exports.create = async function(req, res){
             await comment.populate('user', 'name email');
             console.log(comment);
             commentsMailer.newComment(comment);
+            // let job = queue.create('emails', comment).save(function(err){
+            //     if (err) {
+            //         console.log('error in creating the queue', err);
+            //         return;
+            //     }
+            //     console.log('job enqueued!',job.id);
+            // });
             if (req.xhr){
                 
     
