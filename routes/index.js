@@ -28,4 +28,7 @@ router.use('/comments', require('./comments'));
 //accessing api
 router.use('/api', require('./api'));
 
+//accessing likes
+router.use('/likes', require('./likes'));
+
 module.exports = router;

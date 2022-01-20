@@ -15,28 +15,36 @@ module.exports.home = async function(req, res){
     //     title : "Home"
     // });
     //using try-catch block rather than console.log everytym
-                try {
-                    //poppulate the user
-    let posts = await Post.find({})
-    .sort('createdAt')
-    .populate('user')
-    .populate({
-        path: 'comments',
-        populate: {
-            path: 'user'
-        }
-    });
-        let users = await User.find({})
-            return res.render('home', {
-                title: "Codeial | Home",
-                posts:  posts,
-                all_users: users
-            });
-                } catch (error) {
-                console.log('error', err);
-                return;
+                try{
+        // CHANGE :: populate the likes of each post and comment
+        let posts = await Post.find({})
+        .sort('-createdAt')
+        .populate('user')
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'user'
+            },
+            populate: {
+                path: 'likes'
             }
-    
+         })
+        .populate('comments')
+        .populate('likes');
 
+        let users = await User.find({});
+        console.log('printing the posts',posts[0].comments);
+        return res.render('home', {
+            title: "Codeial | Home",
+            posts:  posts,
+            all_users: users
+        });
+
+    }catch(err){
+        console.log('Error', err);
+        return;
+    }
+   
 }
+
 //after creating the controller, access it in the router file
