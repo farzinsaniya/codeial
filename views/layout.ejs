@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
-
+    <link rel="stylesheet" href="/css/chat_box.css">
     <%- style %>
 </head>
 
@@ -18,7 +18,7 @@
 <!-- header is included from the _header file using the keyword 'include' -->
 
     <%- include('_header'); -%>
-
+    <%- include('_chat_box.ejs'); -%>
         <% if(flash.success && flash.success.length>0) { %>
                 <h5>
                     <%= flash.success %>
