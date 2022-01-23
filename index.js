@@ -1,5 +1,4 @@
-//install express - step1
-//require express using file - step2
+//MAIN PAGE OF THE WEB APP
 
 //starting the app
 const express = require('express');
@@ -18,6 +17,12 @@ const MongoStore = require('connect-mongo')(session);
 const sassMiddleware = require('node-sass-middleware');
 const flash = require('connect-flash');
 const customMware = require('./config/middleware');
+//setting up the chat server
+const chatServer = require('http').Server(app);
+const chatSockets = require('./config/chat_sockets').chatSockets(chatServer);
+//setting up another server for the port to listen
+chatServer.listen(5000);
+console.log('Chat server is listening on port 5000');
 
 //loading the sass
 app.use(sassMiddleware({
