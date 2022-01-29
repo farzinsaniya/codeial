@@ -1,7 +1,7 @@
 <!-- CHANGE :: Creat the code for chat box -->
 <% if (locals.user){ %>
     <div id="user-chat-box">
-        <ul id="chat-messages-list">
+        <ul class="chat-messages-list" id="chat-messages-list">
             <li class="other-message">
                 <span>Other Message</span>
             </li>
@@ -14,8 +14,11 @@
 
         </ul>
         <div id="chat-message-input-container">
-            <input id="chat-message-input" placeholder="Type message here">
-            <button id="send-message">Send</button>
+        <form action="/message/create" method="post" class="message-form" id="message-form">
+            <!-- <textarea id="msg" rows="2" cols="10"  class="chat-message-input" name="msg"  required="required">hi</textarea> -->
+            <input type="type" name="message" id="message-input">
+            <button type="submit" class="send-message-class" id="send-message">Send</button>
+        </form>
         </div>
 
     </div>

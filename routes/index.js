@@ -31,4 +31,7 @@ router.use('/api', require('./api'));
 //accessing likes
 router.use('/likes', require('./likes'));
 
+//accessing message
+router.use('/message', require('./message'));
+
 module.exports = router;

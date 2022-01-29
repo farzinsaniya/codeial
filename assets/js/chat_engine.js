@@ -24,7 +24,9 @@ class ChatEngine{
         this.chatBox = $(`#${chatBoxId}`);
         this.userEmail = userEmail;
 
-        this.socket = io.connect('http://localhost:5000', { transports : ['websocket'] });
+        this.socket = io.connect('http://localhost:5000'
+        , { withCredentials : true }
+        );
 
         if (this.userEmail){
             this.connectionHandler();
@@ -34,30 +36,53 @@ class ChatEngine{
 
 
     connectionHandler(){
-        let self = this ;
-
+        let self = this;
+        
         this.socket.on('connect', function(){
             console.log('connection established using sockets...!');
 
 
-            self.socket.emit('join_room' , {
-                //setting up the chat room
-                user_email : self.userEmail,
-                chatroom : 'codeial'
+            self.socket.emit('join_room', {
+                user_email: self.userEmail,
+                chatroom: 'codeial'
             });
 
-            //joining of the user
-            self.socket.on('user_joined' , function(data){
-                console.log('a user joined the room' , data);
-            });
+            self.socket.on('user_joined', function(data){
+                console.log('a user joined!', data);
+            })
 
 
         });
-
-        // CHANGE :: send a message on clicking the send message button
-        // $('#send-message').click(function(){
-        //     let msg = $('#chat-message-input').val();
-
+        // 
+        
+        $('.message-form').on( "submit", function(event){
+            event.preventDefault();
+            console.log(this);
+            $.ajax({
+                url: '/message/create',
+                method: 'post',
+                data: $('.message-form').serialize(),
+                success: function(data){
+                    console.log($('.message-form').serialize());
+                    //console.log(data);
+                    self.socket.emit('send_message', {
+                    message: data.data.message,
+                    user_email: self.userEmail,
+                    chatroom: 'codeial'
+                });
+                },
+                error: function(error){
+                    console.log(error);
+                }
+            })
+            // console.log($('#submit-form').serialize())
+        })
+        
+        //CHANGE :: send a message on clicking the send message button
+        // $('.send-message-class').click(function(){
+        //     console.log('error ');
+        //     let msg = $('#chat-message-input').text();
+        //     console.log(msg);
         //     if (msg != ''){
         //         self.socket.emit('send_message', {
         //             message: msg,
@@ -67,29 +92,30 @@ class ChatEngine{
         //     }
         // });
 
-        // self.socket.on('receive_message', function(data){
-        //     console.log('message received', data.message);
+       
+        self.socket.on('receive_message', function(data){
+            console.log('message received', data.message);
 
 
-        //     let newMessage = $('<li>');
+            let newMessage = $('<li>');
 
-        //     let messageType = 'other-message';
+            let messageType = 'other-message';
 
-        //     if (data.user_email == self.userEmail){
-        //         messageType = 'self-message';
-        //     }
+            if (data.user_email == self.userEmail){
+                messageType = 'self-message'
+            }
+            // console.log('working uptil here 2');
+            newMessage.append($('<span>', {
+                'html': data.message.content
+            }));
 
-        //     newMessage.append($('<span>', {
-        //         'html': data.message
-        //     }));
-
-        //     newMessage.append($('<sub>', {
-        //         'html': data.user_email
-        //     }));
-
-        //     newMessage.addClass(messageType);
-
-        //     $('#chat-messages-list').append(newMessage);
-        // })
+            newMessage.append($('<sub>', {
+                'html': data.user_email
+            }));
+            //console.log('working uptil here 2');
+            newMessage.addClass(messageType);
+            // console.log('workin uptil here 3');
+            $('.chat-messages-list').append(newMessage);
+        });
     }
 }

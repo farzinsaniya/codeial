@@ -24,7 +24,8 @@ module.exports.chatSockets = function (socketServer) {
     let io = require('socket.io')(socketServer, {
         cors: {
             origin: "http://localhost:8000",
-            methods: ["GET", "POST"]
+            methods: ["GET", "POST"],
+            credentials: true
         }
     }
     );
@@ -39,14 +40,17 @@ module.exports.chatSockets = function (socketServer) {
         socket.on('join_room', function (data) {
             console.log('joining request recieved', data);
 
+            //sockets.join(room_name) adds the client to the room
             socket.join(data.chatroom);
-
+                //user_joined is the event name
             io.in(data.chatroom).emit('user_joined', data);
         });
 
         // CHANGE :: detect send_message and broadcast to everyone in the room
         socket.on('send_message', function (data) {
+            console.log(data);
             io.in(data.chatroom).emit('receive_message', data);
+            
         });
     });
 

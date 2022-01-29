@@ -3,7 +3,13 @@
 //starting the app
 const express = require('express');
 const app = express();
+
+//acquiring environment
+const env = require('./config/environment');
+
+//defining the port
 const port = 8000;
+
 
 //requiring the libraries
 const cookieParser = require('cookie-parser');
@@ -17,17 +23,26 @@ const MongoStore = require('connect-mongo')(session);
 const sassMiddleware = require('node-sass-middleware');
 const flash = require('connect-flash');
 const customMware = require('./config/middleware');
+
+//cors
+const Cors = require('cors');
+app.use(Cors());
+
 //setting up the chat server
 const chatServer = require('http').Server(app);
 const chatSockets = require('./config/chat_sockets').chatSockets(chatServer);
+
 //setting up another server for the port to listen
 chatServer.listen(5000);
 console.log('Chat server is listening on port 5000');
 
+//acquiring paths
+const path = require('path');
+
 //loading the sass
 app.use(sassMiddleware({
-    src: './assets/scss',
-    dest: './assets/css',
+    src: path.join(__dirname, env.asset_path, 'scss'),
+    dest: path.join(__dirname, env.asset_path, 'css'),
     debug: true,
     outputStyle: 'extended',
     prefix: '/css'
@@ -52,7 +67,7 @@ app.set('layout extractScripts', true);
 
 
 //setting up the path for static files
-app.use(express.static('./assets'));
+app.use(express.static(env.asset_path));
 //make the uploads path available to the browser
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
@@ -64,7 +79,7 @@ app.set('views', './views');
 app.use(session({
     name: 'codeial',
     // TODO change the secret before deployment in production mode
-    secret: 'blahsomething',
+    secret: env.session_cookie_key,
     saveUninitialized: false,
     resave: false,
     cookie: {
